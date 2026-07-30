@@ -1,0 +1,16 @@
+{
+  "id": "opengameart-dice-robinj24",
+  "source": "https://opengameart.org/content/dice-3",
+  "sourceVersion": "2014-09-11",
+  "downloadedAt": "2026-07-26",
+  "author": "RobinJ24",
+  "license": "CC0-1.0",
+  "licenseFile": "LICENSE.txt",
+  "originalArchiveSha256": "8EB5FF01BAC0EADD4E3324A774BB7FEEAA2851D2051A2092CD59C6A678311AC4",
+  "outputSha256": "EF5599FA52F0D39ECB01321D811F99DD9F5EB59FD81653074F9B88AFD0D765C1",
+  "transformations": [
+    "OBJ/MTL converted to GLB with obj2gltf",
+    "Geometry quantized with glTF-Transform; no external decoder required"
+  ],
+  "output": "dice.glb"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "terrativa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=22.15.0 <25",
+    "pnpm": ">=11.17.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "dev:admin": "pnpm --filter @terrativa/admin-web dev",
+    "dev:client": "pnpm --filter @terrativa/game-client dev",
+    "dev:server": "pnpm --filter @terrativa/game-server dev",
+    "typecheck": "turbo run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "turbo run test",
+    "validate": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
+    "db:generate": "pnpm --filter @terrativa/database generate",
+    "db:migrate": "pnpm --filter @terrativa/database migrate",
+    "db:deploy": "pnpm --filter @terrativa/database migrate:deploy",
+    "db:seed-foundation": "pnpm --filter @terrativa/database seed:foundation",
+    "docker:up": "docker compose up -d mysql redis",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.5",
+    "@types/node": "^26.1.1",
+    "pnpm": "11.17.0",
+    "turbo": "^2.10.7",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

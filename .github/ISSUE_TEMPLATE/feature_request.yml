@@ -1,0 +1,58 @@
+name: Propor uma melhoria
+description: Sugira uma funcionalidade ou evolução para a Terrativa.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: checkboxes
+    attributes:
+      label: Verificações iniciais
+      options:
+        - label: Pesquisei issues e documentação existentes.
+          required: true
+        - label: A proposta está alinhada a um jogo sem apostas ou dinheiro real.
+          required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Jogo e experiência
+        - World Studio
+        - Multiplayer
+        - Game Engine
+        - Conteúdo regional
+        - Assets e renderização 3D
+        - Infraestrutura
+        - Documentação
+        - Outra
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Qual necessidade ou limitação esta proposta resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Solução proposta
+      description: Descreva o fluxo esperado e os critérios de conclusão.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impactos
+      description: Considere segurança, compatibilidade, desempenho, acessibilidade e manutenção.
+  - type: textarea
+    id: references
+    attributes:
+      label: Referências ou mockups
+

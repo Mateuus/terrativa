@@ -1,0 +1,9 @@
+Dice, by RobinJ24
+Source: https://opengameart.org/content/dice-3
+Original publication: 2014-09-11
+
+License: Creative Commons Zero v1.0 Universal (CC0-1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The original ZIP contains OBJ and MTL files. Terrativa converted the model to
+GLB and quantized its geometry without changing the license.

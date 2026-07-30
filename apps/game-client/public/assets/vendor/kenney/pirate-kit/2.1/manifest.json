@@ -1,0 +1,30 @@
+{
+  "id": "kenney-pirate-kit",
+  "source": "https://kenney.nl/assets/pirate-kit",
+  "sourceVersion": "2.1",
+  "downloadedAt": "2026-07-26",
+  "author": "Kenney",
+  "license": "CC0-1.0",
+  "licenseFile": "LICENSE.txt",
+  "originalArchiveSha256": "667ED2CAF92954DDB98F7B7CEDE831FE99AB75063C26B25E23D32715BEE9C943",
+  "selection": [
+    "boat-row-small.glb",
+    "castle-gate.glb",
+    "castle-wall.glb",
+    "palm-detailed-bend.glb",
+    "palm-detailed-straight.glb",
+    "patch-sand.glb",
+    "rocks-sand-a.glb",
+    "rocks-sand-b.glb",
+    "rocks-sand-c.glb",
+    "structure.glb",
+    "structure-platform-dock-small.glb",
+    "structure-roof.glb",
+    "tower-complete-large.glb",
+    "tower-complete-small.glb",
+    "tower-watch.glb",
+    "Textures/colormap.png"
+  ],
+  "sharedTextureSha256": "451E1D7A53B8E76F4B2EE58742E241509FEE5F82CF2CEE6E3F7ACA86BA718ABE",
+  "usage": "Cenário costeiro e construções modulares do tabuleiro: casas, torres, muralhas, palmeiras, pedras, píer e barco."
+}

@@ -1,0 +1,510 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum ContentStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum RoomVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum MatchMode {
+  CASUAL
+  RANKED
+}
+
+enum PresentationMode {
+  BOARD
+  CITY_3D
+}
+
+enum RankedSeasonStatus {
+  UPCOMING
+  ACTIVE
+  CLOSED
+}
+
+enum RoomStatus {
+  OPEN
+  STARTING
+  STARTED
+  CLOSED
+  EXPIRED
+}
+
+enum RoomMemberRole {
+  HOST
+  PLAYER
+  SPECTATOR
+}
+
+enum GameStatus {
+  STARTING
+  ACTIVE
+  PAUSED
+  FINISHED
+  ABANDONED
+}
+
+enum GamePlayerStatus {
+  ACTIVE
+  DISCONNECTED
+  BANKRUPT
+  LEFT
+}
+
+enum TileType {
+  START
+  PROPERTY
+  TRANSPORT
+  UTILITY
+  REGIONAL_EVENT
+  COMMUNITY_BENEFIT
+  MUNICIPAL_FEE
+  INSPECTION
+  VISITING
+  REST
+  MOVE
+}
+
+enum CardDeckType {
+  REGIONAL_EVENT
+  COMMUNITY_BENEFIT
+}
+
+model User {
+  id              String          @id @db.Char(36)
+  email           String          @unique @db.VarChar(320)
+  username        String          @unique @db.VarChar(40)
+  passwordHash    String          @db.VarChar(255)
+  role            UserRole        @default(USER)
+  status          UserStatus      @default(ACTIVE)
+  emailVerifiedAt DateTime?       @db.DateTime(3)
+  createdAt       DateTime        @default(now()) @db.DateTime(3)
+  updatedAt       DateTime        @updatedAt @db.DateTime(3)
+  deletedAt       DateTime?       @db.DateTime(3)
+  profile         UserProfile?
+  sessions        UserSession[]
+  ownedRooms      Room[]          @relation("RoomOwner")
+  roomMemberships RoomMember[]
+  gamePlayers     GamePlayer[]
+  createdThemes   Theme[]         @relation("ThemeCreator")
+  statistics      PlayerStatistic?
+  auditLogs       AuditLog[]      @relation("AuditActor")
+  ratings         PlayerRating[]
+  ratingEntries   RankedRatingEntry[]
+
+  @@index([status])
+}
+
+model UserProfile {
+  userId      String   @id @db.Char(36)
+  displayName String   @db.VarChar(80)
+  avatarKey   String?  @db.VarChar(120)
+  locale      String   @default("pt-BR") @db.VarChar(16)
+  createdAt   DateTime @default(now()) @db.DateTime(3)
+  updatedAt   DateTime @updatedAt @db.DateTime(3)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserSession {
+  id            String    @id @db.Char(36)
+  userId        String    @db.Char(36)
+  tokenHash     String    @unique @db.Char(64)
+  tokenFamilyId String    @db.Char(36)
+  userAgentHash String?   @db.Char(64)
+  ipHash        String?   @db.Char(64)
+  expiresAt     DateTime  @db.DateTime(3)
+  rotatedAt     DateTime? @db.DateTime(3)
+  revokedAt     DateTime? @db.DateTime(3)
+  createdAt     DateTime  @default(now()) @db.DateTime(3)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt])
+  @@index([tokenFamilyId])
+  @@index([expiresAt])
+}
+
+model Theme {
+  id          String        @id @db.Char(36)
+  slug        String        @unique @db.VarChar(80)
+  name        String        @db.VarChar(120)
+  description String        @db.Text
+  status      ContentStatus @default(DRAFT)
+  version     Int           @default(1)
+  createdBy   String        @db.Char(36)
+  createdAt   DateTime      @default(now()) @db.DateTime(3)
+  updatedAt   DateTime      @updatedAt @db.DateTime(3)
+  deletedAt   DateTime?     @db.DateTime(3)
+  creator     User          @relation("ThemeCreator", fields: [createdBy], references: [id])
+  boards      Board[]
+
+  @@index([status])
+}
+
+model Board {
+  id              String        @id @db.Char(36)
+  themeId         String        @db.Char(36)
+  slug            String        @unique @db.VarChar(80)
+  name            String        @db.VarChar(120)
+  tileCount       Int
+  startingBalance Int
+  passStartReward Int
+  rulesJson       Json
+  version         Int           @default(1)
+  status          ContentStatus @default(DRAFT)
+  createdAt       DateTime      @default(now()) @db.DateTime(3)
+  updatedAt       DateTime      @updatedAt @db.DateTime(3)
+  deletedAt       DateTime?     @db.DateTime(3)
+  theme           Theme         @relation(fields: [themeId], references: [id])
+  tiles           BoardTile[]
+  propertyGroups  PropertyGroup[]
+  cardDecks       CardDeck[]
+  rooms           Room[]
+  games           Game[]
+
+  @@unique([themeId, slug])
+  @@index([themeId, status])
+}
+
+model BoardTile {
+  id          String              @id @db.Char(36)
+  boardId     String              @db.Char(36)
+  position    Int
+  type        TileType
+  name        String              @db.VarChar(120)
+  description String              @db.Text
+  assetKey    String?             @db.VarChar(160)
+  configJson  Json
+  board       Board               @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  property    PropertyDefinition?
+
+  @@unique([boardId, position])
+  @@index([boardId, type])
+}
+
+model PropertyGroup {
+  id           String               @id @db.Char(36)
+  boardId      String               @db.Char(36)
+  key          String               @db.VarChar(60)
+  name         String               @db.VarChar(120)
+  color        String               @db.Char(7)
+  upgradeCost  Int
+  maxLevel     Int                  @default(4)
+  board        Board                @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  properties   PropertyDefinition[]
+
+  @@unique([boardId, key])
+}
+
+model PropertyDefinition {
+  id             String        @id @db.Char(36)
+  tileId         String        @unique @db.Char(36)
+  groupId        String        @db.Char(36)
+  purchasePrice  Int
+  mortgageValue  Int
+  unmortgageCost Int
+  rentByLevel    Json
+  tile           BoardTile     @relation(fields: [tileId], references: [id], onDelete: Cascade)
+  group          PropertyGroup @relation(fields: [groupId], references: [id])
+
+  @@index([groupId])
+}
+
+model CardDeck {
+  id      String           @id @db.Char(36)
+  boardId String           @db.Char(36)
+  type    CardDeckType
+  name    String           @db.VarChar(120)
+  board   Board            @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards   CardDefinition[]
+
+  @@unique([boardId, type])
+}
+
+model CardDefinition {
+  id               String   @id @db.Char(36)
+  deckId           String   @db.Char(36)
+  key              String   @db.VarChar(80)
+  title            String   @db.VarChar(120)
+  publicText       String   @db.Text
+  effectType       String   @db.VarChar(80)
+  effectConfigJson Json
+  tradable         Boolean  @default(false)
+  enabled          Boolean  @default(true)
+  deck             CardDeck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  @@unique([deckId, key])
+  @@index([deckId, enabled])
+}
+
+model Room {
+  id                  String         @id @db.Char(36)
+  code                String         @unique @db.VarChar(12)
+  name                String         @db.VarChar(100)
+  ownerUserId         String         @db.Char(36)
+  boardId             String         @db.Char(36)
+  mode                MatchMode      @default(CASUAL)
+  presentationMode    PresentationMode @default(BOARD)
+  visibility          RoomVisibility @default(PUBLIC)
+  passwordHash        String?        @db.VarChar(255)
+  minPlayers          Int            @default(2)
+  maxPlayers          Int            @default(6)
+  turnDurationSeconds Int            @default(60)
+  allowSpectators     Boolean        @default(false)
+  status              RoomStatus     @default(OPEN)
+  createdAt           DateTime       @default(now()) @db.DateTime(3)
+  expiresAt           DateTime       @db.DateTime(3)
+  owner               User           @relation("RoomOwner", fields: [ownerUserId], references: [id])
+  board               Board          @relation(fields: [boardId], references: [id])
+  members             RoomMember[]
+  game                Game?
+
+  @@index([status, visibility, createdAt])
+  @@index([ownerUserId])
+}
+
+model RoomMember {
+  id        String         @id @db.Char(36)
+  roomId    String         @db.Char(36)
+  userId    String         @db.Char(36)
+  role      RoomMemberRole @default(PLAYER)
+  pawnKey   String?        @db.VarChar(80)
+  colorKey  String?        @db.VarChar(40)
+  ready     Boolean        @default(false)
+  joinedAt  DateTime       @default(now()) @db.DateTime(3)
+  leftAt    DateTime?      @db.DateTime(3)
+  room      Room           @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id])
+
+  @@unique([roomId, userId])
+  @@index([userId, leftAt])
+}
+
+model Game {
+  id             String         @id @db.Char(36)
+  roomId         String         @unique @db.Char(36)
+  boardId        String         @db.Char(36)
+  boardVersion   Int
+  mode           MatchMode      @default(CASUAL)
+  status         GameStatus     @default(STARTING)
+  stateVersion   Int            @default(0)
+  currentPlayerId String?       @db.Char(36)
+  round          Int            @default(0)
+  startedAt      DateTime?      @db.DateTime(3)
+  finishedAt     DateTime?      @db.DateTime(3)
+  winnerPlayerId String?        @db.Char(36)
+  finishReason   String?        @db.VarChar(80)
+  room           Room           @relation(fields: [roomId], references: [id])
+  board          Board          @relation(fields: [boardId], references: [id])
+  players        GamePlayer[]
+  snapshots      GameSnapshot[]
+  commands       GameCommand[]
+  events         GameEvent[]
+  result         GameResult?
+  rankedResult   RankedMatchResult?
+
+  @@index([status, startedAt])
+  @@index([boardId, boardVersion])
+}
+
+model GamePlayer {
+  id            String           @id @db.Char(36)
+  gameId        String           @db.Char(36)
+  userId        String           @db.Char(36)
+  turnOrder     Int
+  pawnKey       String           @db.VarChar(80)
+  colorKey      String           @db.VarChar(40)
+  finalPosition Int?
+  finalBalance  Int?
+  finalNetWorth Int?
+  status        GamePlayerStatus @default(ACTIVE)
+  disconnectedAt DateTime?       @db.DateTime(3)
+  bankruptAt    DateTime?        @db.DateTime(3)
+  game          Game             @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  user          User             @relation(fields: [userId], references: [id])
+
+  @@unique([gameId, userId])
+  @@unique([gameId, turnOrder])
+  @@index([userId, status])
+}
+
+model GameSnapshot {
+  id        String   @id @db.Char(36)
+  gameId    String   @db.Char(36)
+  version   Int
+  stateJson Json
+  checksum  String   @db.Char(64)
+  reason    String   @db.VarChar(80)
+  createdAt DateTime @default(now()) @db.DateTime(3)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, version])
+  @@index([gameId, createdAt])
+}
+
+model GameCommand {
+  id                   String      @id @db.Char(36)
+  gameId               String      @db.Char(36)
+  commandId            String      @db.Char(36)
+  actorPlayerId        String      @db.Char(36)
+  commandType          String      @db.VarChar(80)
+  expectedStateVersion Int
+  accepted             Boolean
+  resultingStateVersion Int
+  acknowledgementJson Json
+  createdAt            DateTime    @default(now()) @db.DateTime(3)
+  game                 Game        @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  events               GameEvent[]
+
+  @@unique([gameId, commandId])
+  @@index([gameId, resultingStateVersion])
+}
+
+model GameEvent {
+  id              String      @id @db.Char(36)
+  gameId          String      @db.Char(36)
+  gameCommandId   String      @db.Char(36)
+  version         Int
+  sequence        Int
+  eventType       String      @db.VarChar(80)
+  actorPlayerId   String?     @db.Char(36)
+  payloadJson     Json
+  createdAt       DateTime    @default(now()) @db.DateTime(3)
+  game            Game        @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  command         GameCommand @relation(fields: [gameCommandId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, sequence])
+  @@index([gameId, version])
+  @@index([gameCommandId, sequence])
+}
+
+model GameResult {
+  id              String   @id @db.Char(36)
+  gameId          String   @unique @db.Char(36)
+  winnerPlayerId  String?  @db.Char(36)
+  durationSeconds Int
+  rounds          Int
+  summaryJson     Json
+  createdAt       DateTime @default(now()) @db.DateTime(3)
+  game            Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+}
+
+model PlayerStatistic {
+  userId              String   @id @db.Char(36)
+  gamesPlayed         Int      @default(0)
+  gamesWon            Int      @default(0)
+  propertiesPurchased Int      @default(0)
+  tradesCompleted     Int      @default(0)
+  totalTurns          Int      @default(0)
+  updatedAt           DateTime @updatedAt @db.DateTime(3)
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RankedSeason {
+  id        String             @id @db.Char(36)
+  slug      String             @unique @db.VarChar(80)
+  name      String             @db.VarChar(120)
+  status    RankedSeasonStatus @default(UPCOMING)
+  startsAt  DateTime           @db.DateTime(3)
+  endsAt    DateTime           @db.DateTime(3)
+  createdAt DateTime           @default(now()) @db.DateTime(3)
+  ratings   PlayerRating[]
+  matches   RankedMatchResult[]
+  entries   RankedRatingEntry[]
+
+  @@index([status, startsAt, endsAt])
+}
+
+model PlayerRating {
+  id               String       @id @db.Char(36)
+  seasonId         String       @db.Char(36)
+  userId           String       @db.Char(36)
+  rating           Int          @default(1000)
+  gamesPlayed      Int          @default(0)
+  wins             Int          @default(0)
+  topThreeFinishes Int          @default(0)
+  provisionalGames Int          @default(0)
+  updatedAt        DateTime     @updatedAt @db.DateTime(3)
+  season           RankedSeason @relation(fields: [seasonId], references: [id])
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([seasonId, userId])
+  @@index([seasonId, rating])
+  @@index([userId, updatedAt])
+}
+
+model RankedMatchResult {
+  id                 String       @id @db.Char(36)
+  gameId             String       @unique @db.Char(36)
+  seasonId           String       @db.Char(36)
+  calculationVersion Int
+  ratingsBeforeJson  Json
+  ratingsAfterJson   Json
+  createdAt          DateTime     @default(now()) @db.DateTime(3)
+  game               Game         @relation(fields: [gameId], references: [id])
+  season             RankedSeason @relation(fields: [seasonId], references: [id])
+  entries            RankedRatingEntry[]
+
+  @@index([seasonId, createdAt])
+}
+
+model RankedRatingEntry {
+  id                  String            @id @db.Char(36)
+  rankedMatchResultId String            @db.Char(36)
+  seasonId            String            @db.Char(36)
+  userId              String            @db.Char(36)
+  playerId            String            @db.Char(36)
+  ratingBefore        Int
+  ratingAfter         Int
+  ratingDelta         Int
+  placement           Int
+  netWorth            Int
+  bankrupt            Boolean
+  performanceScore    Int
+  periodPoints        Int
+  createdAt           DateTime          @default(now()) @db.DateTime(3)
+  match               RankedMatchResult @relation(fields: [rankedMatchResultId], references: [id], onDelete: Cascade)
+  season              RankedSeason      @relation(fields: [seasonId], references: [id])
+  user                User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([rankedMatchResultId, userId])
+  @@index([seasonId, createdAt, periodPoints])
+  @@index([userId, createdAt])
+}
+
+model AuditLog {
+  id          String   @id @db.Char(36)
+  actorUserId String?  @db.Char(36)
+  action      String   @db.VarChar(100)
+  targetType  String   @db.VarChar(80)
+  targetId    String?  @db.Char(36)
+  metadataJson Json?
+  createdAt   DateTime @default(now()) @db.DateTime(3)
+  actor       User?    @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId, createdAt])
+  @@index([targetType, targetId])
+}

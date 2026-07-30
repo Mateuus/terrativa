@@ -1,0 +1,70 @@
+name: Relatar um bug
+description: Informe um comportamento reproduzível que não funciona como esperado.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por ajudar a melhorar a Terrativa. Não publique vulnerabilidades aqui; use a política em `SECURITY.md`.
+  - type: checkboxes
+    attributes:
+      label: Verificações iniciais
+      options:
+        - label: Pesquisei issues existentes e não encontrei uma duplicata.
+          required: true
+        - label: Removi segredos, tokens e dados pessoais do relato.
+          required: true
+        - label: Este relato não descreve uma vulnerabilidade de segurança.
+          required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área afetada
+      options:
+        - Jogo web
+        - World Studio / Administração
+        - Servidor / Multiplayer
+        - Game Engine
+        - Banco de dados
+        - Conteúdo / Assets
+        - Documentação / Ferramentas
+        - Outra
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição
+      description: Explique o comportamento observado e o comportamento esperado.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Passos para reproduzir
+      placeholder: |
+        1. Abra...
+        2. Selecione...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Ambiente
+      description: Sistema operacional, navegador, versão do Node, commit e serviços usados.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs ou evidências
+      description: Anexe imagens, vídeos ou logs sanitizados, se disponíveis.
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+

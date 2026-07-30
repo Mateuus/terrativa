@@ -1,0 +1,14 @@
+{
+  "name": "Kenney Car Kit",
+  "version": "3.1",
+  "source": "https://kenney.nl/assets/car-kit",
+  "license": "CC0 1.0",
+  "selectedAssets": [
+    "ambulance.glb",
+    "sedan.glb",
+    "suv.glb",
+    "taxi.glb",
+    "van.glb"
+  ],
+  "usage": "Veículos e deslocamento automático nos mundos 3D da Terrativa."
+}

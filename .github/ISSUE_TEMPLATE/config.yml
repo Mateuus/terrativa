@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Relatar vulnerabilidade
+    url: https://github.com/Mateuus/terrativa/security/advisories/new
+    about: Envie vulnerabilidades de forma privada.
+  - name: Guia de contribuição
+    url: https://github.com/Mateuus/terrativa/blob/main/CONTRIBUTING.md
+    about: Consulte as regras antes de enviar código ou assets.
+

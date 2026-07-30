@@ -1,0 +1,3 @@
+ALTER TABLE `Room`
+  ADD COLUMN `presentationMode` ENUM('BOARD', 'CITY_3D') NOT NULL DEFAULT 'BOARD'
+  AFTER `mode`;

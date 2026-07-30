@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "packKey": "quaternius-ultimate-modular-men",
+  "name": "Ultimate Modular Men Pack",
+  "creator": "Quaternius",
+  "sourceUrl": "https://quaternius.com/packs/ultimatemodularcharacters.html",
+  "downloadFolder": "https://drive.google.com/drive/folders/1USAAquX2JJWuA2m6zol0KUkFe3UkZ8zX",
+  "license": "CC0-1.0",
+  "version": "2022-02",
+  "downloadedAt": "2026-07-26",
+  "animations": [
+    "Idle",
+    "Run",
+    "Walk",
+    "Wave"
+  ],
+  "variants": [
+    {
+      "pawnKey": "quaternius-men-01",
+      "file": "adventurer.gltf",
+      "sha256": "21f7a61afb6bd6cef6961490c367594e3c2fc01ec1f041662131172ce763063e"
+    },
+    {
+      "pawnKey": "quaternius-men-02",
+      "file": "beach.gltf",
+      "sha256": "76e001ea131fd76a1bd938a7862606cb8037f7049b632783580b9bf4da2371a8"
+    },
+    {
+      "pawnKey": "quaternius-men-03",
+      "file": "casual-2.gltf",
+      "sha256": "55c654d09a2a5ff6e3bd6158d4a1b462f181cd6f1e12a0f5e9d959f9c3abc438"
+    },
+    {
+      "pawnKey": "quaternius-men-04",
+      "file": "casual-hoodie.gltf",
+      "sha256": "dd74886c26998a0fa888b4ce557a0932d7d97b0265dd4c763154d081b7a6cb98"
+    },
+    {
+      "pawnKey": "quaternius-men-05",
+      "file": "farmer.gltf",
+      "sha256": "46d3e85fa8d848ee479ab8e4672c16724ee4ea51f3af5733705a153937f93555"
+    },
+    {
+      "pawnKey": "quaternius-men-06",
+      "file": "king.gltf",
+      "sha256": "659c7d84dcea8c6331698c3430484861944c83e629389425664b782d4aecd17c"
+    },
+    {
+      "pawnKey": "quaternius-men-07",
+      "file": "punk.gltf",
+      "sha256": "f9224072f5e6cbb207eca250faa7f1868614a1a984074fe79c7b2862df4feb42"
+    },
+    {
+      "pawnKey": "quaternius-men-08",
+      "file": "spacesuit.gltf",
+      "sha256": "33e0e0fbc6140ffc936a099fd84a274be406115c4b32aa0a697641710b67392a"
+    },
+    {
+      "pawnKey": "quaternius-men-09",
+      "file": "suit.gltf",
+      "sha256": "6c89fbb31b96c1a63ad94e3dee0942bd7b34bc789a5d39fd6a6a1738a9214fb3"
+    },
+    {
+      "pawnKey": "quaternius-men-10",
+      "file": "swat.gltf",
+      "sha256": "622b3f36fcac90539ef8f7121ec1f11b5e1ae603a085019b3fa96eba20dddfd3"
+    },
+    {
+      "pawnKey": "quaternius-men-11",
+      "file": "worker.gltf",
+      "sha256": "e49f8ec0f8a7de72dd26b1c01e6413c9a87a9116eeee21f9364ccd36bc286335"
+    }
+  ],
+  "licenseFile": {
+    "file": "LICENSE.txt",
+    "sha256": "e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe"
+  }
+}
