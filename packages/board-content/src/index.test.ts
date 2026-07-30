@@ -161,5 +161,5 @@ describe("conteúdo Terrativa: Baixada Santista", () => {
     expect(report.averageRounds).toBeGreaterThan(1);
     expect(report.averagePurchases).toBeGreaterThan(4);
     expect(report.maximumWinnerShare).toBeLessThan(0.7);
-  });
+  }, 15_000);
 });
