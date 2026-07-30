@@ -10,8 +10,8 @@
     "test": "vitest run src"
   },
   "dependencies": {
-    "@babylonjs/core": "^9.18.0",
-    "@babylonjs/loaders": "^9.18.0",
+    "@babylonjs/core": "^9.18.2",
+    "@babylonjs/loaders": "^9.18.2",
     "@colyseus/sdk": "^0.17.43",
     "@tanstack/react-query": "^5.101.4",
     "@terrativa/board-content": "workspace:*",

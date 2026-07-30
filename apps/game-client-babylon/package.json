@@ -10,13 +10,13 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@babylonjs/addons": "9.18.0",
-		"@babylonjs/core": "9.18.0",
-		"@babylonjs/gui": "9.18.0",
-		"@babylonjs/havok": "1.3.12",
-		"@babylonjs/materials": "9.18.0",
+		"@babylonjs/addons": "9.18.2",
+		"@babylonjs/core": "9.18.2",
+		"@babylonjs/gui": "9.18.2",
+		"@babylonjs/havok": "1.3.14",
+		"@babylonjs/materials": "9.18.2",
 		"babylonjs-editor-tools": "^5.4.2",
-		"next": "16.2.6",
+		"next": "16.2.12",
 		"react": "19.2.8",
 		"react-dom": "19.2.8"
 	},
