@@ -28,9 +28,9 @@
     "docker:down": "docker compose down"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.5",
-    "@types/node": "^26.1.1",
-    "pnpm": "11.17.0",
+    "@biomejs/biome": "^2.5.6",
+    "@types/node": "^26.1.2",
+    "pnpm": "11.18.0",
     "turbo": "^2.10.7",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
