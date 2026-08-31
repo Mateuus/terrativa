@@ -10,20 +10,20 @@
     "test": "vitest run src"
   },
   "dependencies": {
-    "@babylonjs/core": "^9.18.0",
-    "@babylonjs/loaders": "^9.18.0",
-    "@colyseus/sdk": "^0.17.43",
-    "@tanstack/react-query": "^5.101.4",
+    "@babylonjs/core": "^9.23.0",
+    "@babylonjs/loaders": "^9.23.0",
+    "@colyseus/sdk": "^0.18.2",
+    "@tanstack/react-query": "^5.102.8",
     "@terrativa/board-content": "workspace:*",
     "@terrativa/config": "workspace:*",
     "@terrativa/protocol": "workspace:*",
     "@terrativa/ui": "workspace:*",
-    "maplibre-gl": "6.0.0",
+    "maplibre-gl": "6.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-hook-form": "^7.83.0",
+    "react-hook-form": "^7.86.0",
     "zod": "^4.4.3",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
