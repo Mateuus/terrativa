@@ -21,10 +21,10 @@
   },
   "dependencies": {
     "@terrativa/board-content": "workspace:*",
-    "@prisma/adapter-mariadb": "7.9.0",
-    "@prisma/client": "^7.9.0",
+    "@prisma/adapter-mariadb": "7.10.0",
+    "@prisma/client": "^7.10.0",
     "dotenv": "^17.4.2",
-    "mariadb": "3.5.3"
+    "mariadb": "3.5.4"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
